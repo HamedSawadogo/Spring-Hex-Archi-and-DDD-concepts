@@ -1,0 +1,16 @@
+services:
+  postgres_db:
+    image: postgres:16 # Use a specific version of the official Postgres image
+    container_name: my_postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: user # The PostgreSQL user (role) to create
+      POSTGRES_PASSWORD: user # The password for the user
+      POSTGRES_DB: test # The initial database to create
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Mount a volume for data persistence
+    ports:
+      - "5432:5432" # Map port 5432 on the host to port 5432 in the container
+
+volumes:
+  postgres_data:

@@ -1,0 +1,179 @@
+Plan proposé pour ton PPT JPA Mastering
+Slide 1 – Titre
+
+Titre : JPA Mastering – Best Practices et pièges à éviter
+Sous-titre : Une vision senior pour concevoir des entités et relations robustes
+
+Nom / Date / Projet (optionnel)
+
+Slide 2 – Objectifs
+
+Comprendre les relations JPA et leur impact SQL
+
+Éviter les pièges classiques (N+1, pagination, cascade, etc.)
+
+Maîtriser les value objects et clés composées
+
+Optimiser transactions et performance
+
+Appliquer des bonnes pratiques DDD / Aggregates
+
+Slide 3 – Les Relations JPA
+Relation	Quand l’utiliser	Attention / Piège
+@ManyToOne	Par défaut, relation simple	Problèmes N+1 si mal fetch
+@OneToMany	Collections dépendantes	Souvent inutile côté JPA, N+1 possible
+@OneToOne	Vraie 1-1 en base	Attention aux joins inutiles
+@ManyToMany	À éviter en prod	Perte de flexibilité → préférer entité de liaison
+
+mappedBy = côté inverse (non propriétaire)
+
+Côté propriétaire = FK, écrit en base
+
+Slide 4 – Value Objects
+
+@Embeddable → définit un objet valeur
+
+@Embedded → intégré dans la table de l’entité
+
+@EmbeddedId → clé primaire composée
+
+@ElementCollection → collection technique, table implicite (ex : List<String>, Set<Adresse>)
+
+Exemple rapide :
+
+@Embeddable
+class Adresse { String rue; String ville; }
+@Entity class Client { @Embedded Adresse adresse; }
+
+Slide 5 – Transactions et Concurrence
+
+@Version → optimistic locking
+
+@Lock(PESSIMISTIC_WRITE) → cas critiques (paiement…)
+
+@Transactional(readOnly = true)
+
+Désactive dirty checking
+
+Évite flush inutile
+
+Moins de mémoire, plus rapide
+
+Slide 6 – Collections
+
+Préférer Set à List si l’ordre n’a pas de sens
+
+Pourquoi List = dangereux :
+
+Hibernate crée colonne d’index
+
+Insert en début → UPDATE massif
+
+Problèmes de performance
+
+List uniquement si ordre métier réel
+
+Slide 7 – Cascade
+
+❌ Éviter CascadeType.ALL par défaut
+
+MERGE coûte cher sur grosses entités
+
+REMOVE supprime l’historique → mauvais pour audit
+
+Cascade = OK uniquement pour objets dépendants (ex : OrderLine → Order)
+
+Slide 8 – Fetching
+
+Toujours Fetch.LAZY
+
+Charger par use-case (JOIN FETCH, DTO, EntityGraph)
+
+⚠️ JOIN FETCH + pagination = faux ami → résultats incohérents
+
+Attention aux N+1 queries
+
+Slide 9 – @MapsId
+
+Utilisé quand FK fait partie de la PK
+
+Garantit cohérence du mapping
+
+Typique dans entités de liaison enrichies
+
+Slide 10 – Soft Delete
+
+Ne jamais supprimer les données métier importantes
+
+Marquer les entités deleted = true
+
+Filtrer automatiquement avec Hibernate :
+
+@Where(clause = "deleted = false")
+
+
+Permet audit, cohérence, historique
+
+Slide 11 – DDD / Aggregates
+
+Relation JPA ≠ relation métier
+
+Charger uniquement Aggregate root
+
+Ne pas naviguer tout le graphe
+
+Exemple : Order → OrderLine, mais pas Customer → Address → Country…
+
+Slide 12 – Règles d’or
+
+ManyToOne = standard, OneToMany = rare
+
+Pas de ManyToMany en prod → entité de liaison
+
+Set > List sauf ordre métier
+
+Cascade limité → objet dépendant uniquement
+
+Fetch LAZY, charger par use-case
+
+Soft delete > DELETE physique
+
+Slide 13 – Schéma récapitulatif
+
+Diagramme d’un Order Aggregate :
+
+Order
+ ├─ OrderLine (Set, cascade PERSIST)
+ └─ Payment (entité séparée)
+Client (ref par ID, soft delete)
+
+
+Montrer PK/EmbeddedId et @MapsId
+
+Indiquer LAZY loading
+
+Slide 14 – Conclusion
+
+JPA = outil pour charger des Aggregates cohérents
+
+Toujours penser métier avant technique
+
+Appliquer ces règles évite bugs, pertes de données, et problèmes perf
+
+Slide 15 – Questions / Notes
+
+Lien vers ton cheat sheet
+
+Notes perso sur performance / audits
+
+💡 Style Pro recommandé
+
+Fond blanc ou gris clair
+
+Titres gras + couleur contrastée
+
+Schémas simples pour relations et PK
+
+Exemple de code avec fond clair / police monospace
+
+Graphiques pour expliquer Lazy vs Eager fetch, cascade, soft delete

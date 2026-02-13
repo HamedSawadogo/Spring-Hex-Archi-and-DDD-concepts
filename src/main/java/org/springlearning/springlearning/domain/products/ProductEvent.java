@@ -1,4 +1,9 @@
 package org.springlearning.springlearning.domain.products;
 
-public class ProductEvent {
+import java.time.Instant;
+
+public interface  ProductEvent {
+   default Instant occurredOn() {
+       return Instant.now();
+   }
 }

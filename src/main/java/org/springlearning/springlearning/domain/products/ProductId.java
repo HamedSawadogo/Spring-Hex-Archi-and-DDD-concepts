@@ -4,11 +4,11 @@ import org.springframework.util.Assert;
 
 import java.util.UUID;
 
-public record BookId(UUID bookId) {
-    public BookId {
-        Assert.notNull(bookId, "BookId should not be null!");
+public record ProductId(UUID productId) {
+    public ProductId {
+        Assert.notNull(productId, "BookId should not be null!");
     }
-    public BookId()  {
+    public ProductId()  {
         this(UUID.randomUUID());
     }
 }

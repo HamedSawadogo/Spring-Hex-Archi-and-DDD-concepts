@@ -1,3 +1,26 @@
 spring:
-  application:
-    name: spring-learning
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: user
+    password: user
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      # Options: none, update, create, create-drop, validate
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+#        cache:
+#          use_second_level_cache: true
+#          use_query_cache: true
+#        javax:
+#          cache:
+#            provider: org.hibernate.cache.internal.CaffeineRegionFactory
+    # configure the database dialect for optimal performance
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+# Optional: configure the server port
+server:
+  port: 9000
