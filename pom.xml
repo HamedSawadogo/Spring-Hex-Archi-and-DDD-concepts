@@ -28,8 +28,14 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-h2console</artifactId>
@@ -90,6 +96,12 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                            <!-- other annotation processors -->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
@@ -107,5 +119,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

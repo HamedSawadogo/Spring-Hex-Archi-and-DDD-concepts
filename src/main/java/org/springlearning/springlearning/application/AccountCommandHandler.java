@@ -1,6 +1,8 @@
 package org.springlearning.springlearning.application;
+import org.springframework.stereotype.Component;
 import org.springlearning.springlearning.domain.*;
 
+@Component
 public class AccountCommandHandler {
     private final EventStore eventStore;
 

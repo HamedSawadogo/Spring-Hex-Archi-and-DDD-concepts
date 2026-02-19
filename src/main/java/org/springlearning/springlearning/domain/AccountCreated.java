@@ -1,18 +1,32 @@
 package org.springlearning.springlearning.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AccountCreated implements Event {
-    private Long id;
+    private String eventType;
+    private String aggregateId;
     private BigDecimal amount;
-    private LocalDateTime createdAt;
+    private LocalDateTime occurredAt;
     private String status;
+
+    public AccountCreated(String aggregateId, BigDecimal amount, String status) {
+        this.aggregateId = aggregateId;
+        this.amount = amount;
+        this.status = status;
+    }
+
+    @Override
+    public String getEventType() {
+        return "ACCOUNT_CREATED";
+    }
+
+    @Override
+    public LocalDateTime getOccurredAt() {
+        return LocalDateTime.now();
+    }
 }

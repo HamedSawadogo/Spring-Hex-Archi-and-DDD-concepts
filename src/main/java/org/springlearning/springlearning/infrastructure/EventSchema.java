@@ -11,12 +11,10 @@ import java.time.LocalDateTime;
 @Table
 @NoArgsConstructor @AllArgsConstructor
 public class EventSchema {
-    @Id @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
-    private String  eventId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long  eventId;
     private String aggregateId;
     private String eventType;
-    private LocalDateTime occuredAt;
+    private LocalDateTime occurredAt;
     private String data;
 }

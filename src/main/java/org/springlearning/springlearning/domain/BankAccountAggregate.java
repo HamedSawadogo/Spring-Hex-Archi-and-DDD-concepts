@@ -12,7 +12,7 @@ import java.util.List;
 @Data @NoArgsConstructor
 @AllArgsConstructor
 public class BankAccountAggregate {
-    private Long id;
+    private AccountId accountId;
     private BigDecimal amount;
     private LocalDateTime createdAt;
     private String status;
@@ -35,9 +35,8 @@ public class BankAccountAggregate {
             throw new BusinessException("invalid amount");
         }
         var event = new AccountCreated(
-                command.getId(),
+                AccountId.create().id(),
                 command.getAmount(),
-                command.getCreatedAt(),
                 command.getStatus()
         );
         events.add(event);
@@ -49,10 +48,9 @@ public class BankAccountAggregate {
             throw new BusinessException("invalid amount");
         }
         var event = new AccountCredited(
-                accountCredited.getId(),
+                accountCredited.getStatus(),
                 accountCredited.getAmount(),
-                accountCredited.getCreatedAt(),
-                accountCredited.getStatus()
+                accountCredited.getAggregateId()
         );
         events.add(event);
         apply(event);
@@ -62,8 +60,8 @@ public class BankAccountAggregate {
     public  void apply(Event event) {
         if (event instanceof AccountCreated accountCreated) {
             this.amount = accountCreated.getAmount();
-            this.id = accountCreated.getId();
-            this.createdAt = accountCreated.getCreatedAt();
+            this.accountId = new AccountId(accountCreated.getAggregateId());
+            this.createdAt = accountCreated.getOccurredAt();
             this.status = accountCreated.getStatus();
         } else if (event instanceof AccountCredited accountCredited) {
             this.amount = this.amount.add(accountCredited.getAmount());
