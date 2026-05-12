@@ -52,7 +52,7 @@ Installation
 Bash
 
 # Clone the repository
-git clone https://github.com/your-username/modular-monolith-ddd.git
+https://github.com/HamedSawadogo/Spring-Hex-Archi-and-DDD-concepts.git
 
 # Build all modules
 mvn clean install
