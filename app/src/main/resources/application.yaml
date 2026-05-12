@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: app
+  jpa:
+    show-sql: true
+server:
+  port: 9000
+  servlet:
+    context-path: /api/v1
